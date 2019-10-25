@@ -3,19 +3,13 @@
 
 ## About
 
-This project folder is a boilerplate for c++ projects. 
-It is free to use (MIT Licence)
+This project is a rref calculator. Modify the matrices and
+this program will calculate the rref if there exist a rref
 
-The main cpp file in src is just the main function with cstdio lib
+The main cpp file require you to hard code the 
+numbers in matrices into the int structures a and b
 
-    using namespace std;
-    int main()
-    {
-    
-        return 0;
-    }
-
-Also included is a main.h file
+Also included is a main.h file that does nothing
 
 ## Project files
 
