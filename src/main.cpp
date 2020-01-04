@@ -17,7 +17,7 @@ int main() {
 	vector<vector<int> > a(A_width, vector<int>(A_height));
 
 	// inits the first and second matrix
-	puts("\nFirst matrix input (put the elements of row seperated by spaces or linebreaks): ");
+	puts("\nFirst matrix input (put the elements (must be integers) of row seperated by spaces or linebreaks): ");
 	cout << "* Remeber, this must be a " << A_width << "*" << A_height << " matrix\n\n";
 	for (int i = 0; i < A_height; i++) {
 		cout << "Line " << i + 1 << ": ";
@@ -27,14 +27,35 @@ int main() {
 		cout << "\n";
 	}
 
+	vector <bool> locked{false};
+	vector <bool> flags;
+
 	// solve rref
 	for (int i = 0; i < A_width; i++) {
-		for (int j = 0; j < B_height; j++) {
-			a[i][j] = 0;
-			for (int k = 0; k < A_height; k++) {
-				c[i][j] += a[i][k] * b[k][j];
+
+		// for each row, if the element is 0, move it to the end
+		for (int j = 0; j < A_height; j++) {
+			if (a[j][i] == 0 && !locked[j]) {
+				flags.push_back(j);
 			}
 		}
+		if (flags.size() == A_height) {
+			continue;
+		}
+		else {
+			locked[i] = true;
+			for (auto i : flags) {
+				auto tmp = a[i];
+				a.erase(a.begin() + i);
+				a.push_back(tmp);
+			}
+		}
+
+		for (auto k = 0; k < flags.size(); k++) {
+			auto element = a[k];
+		}
+		flags.clear();
+
 	}
 
 	// output answer
