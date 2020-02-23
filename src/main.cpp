@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
+#include "Fraction.h"
 using namespace std;
 
 int main() {
@@ -14,7 +15,13 @@ int main() {
 	cin >> A_height;
 
 	// inits matrices
-	vector<vector<int> > a(A_width, vector<int>(A_height));
+	vector<vector<int>> parsedFractions(A_width, vector<int>(A_height));
+	
+	for (int i = 0; i < a_width; i++) {
+		for (int j = 0; j < a_height; j++)
+			printf("%i\t", a[i][j]);
+		puts("\n");
+	}
 
 	// inits the first and second matrix
 	puts("\nFirst matrix input (put the elements (must be integers) of row seperated by spaces or linebreaks): ");
@@ -62,7 +69,7 @@ int main() {
 	puts("The answer is: ");
 	for (int i = 0; i < A_height; i++) {
 		for (int j = 0; j < A_height; j++)
-			printf("%i\t", a[i][j]);
+			printf("%i\t", parsedFractions[i][j]);
 		puts("\n");
 	}
 
@@ -70,3 +77,5 @@ int main() {
 	return 0;
 
 }
+
+#endif LZZ_Fraction_h
