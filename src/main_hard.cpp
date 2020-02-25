@@ -10,7 +10,7 @@ using namespace std;
 // from https://www.techiedelight.com/trim-string-cpp-remove-leading-trailing-spaces/
 const string WHITESPACE = " \n\r\t\f\v";
 // I know bad pratice, but I'm still learning
-int lead = 0;
+int col_ptr = 0;
 
 string ltrim(const string& s)
 {
@@ -24,13 +24,27 @@ string rtrim(const string& s)
 	return (end == string::npos) ? "" : s.substr(0, end + 1);
 }
 
-string trim(const string& s)
-{
+string trim(const string& s) {
+	// trims right and left for whitespace chars
 	return rtrim(ltrim(s));
 }
 
-bool sortcol(const vector<int>& v1, const vector<int>& v2) {
-	return v1[lead] < v2[lead];
+bool sortcol(vector<Fraction>& v1, vector<Fraction>& v2) {
+	return v1[col_ptr] < v2[col_ptr];
+}
+
+bool col_zeros(vector<vector <Fraction>>& matrix, const int col) {
+	// counts zeros in col
+	int zeros = 0;
+	for (int i = 0; i < matrix.size(); i++) {
+		if (matrix[i][col] == Fraction(0,1)) {
+			zeros++;
+		}
+	}
+	if (matrix.size() == zeros) {
+		return true;
+	}
+	return false;
 }
 
 int main() {
@@ -78,63 +92,79 @@ int main() {
 		}
 	}
 
-	int done_y = 0, done_x = 0;
+	// inits; end is when to stop, zero counter is how many zero rows
 	int end = a_height;
-	int end_x = a_height;
-	bool finished_push = false;
-	while (lead < end) {
+	int zero_counter = 0;
+	int row_ptr, pivot;
+	while (col_ptr < end) {
+		row_ptr = 0;
+		pivot = end;
 		// sort by x (lead) element in row https://www.geeksforgeeks.org/sorting-2d-vector-in-c-set-1-by-row-and-column/
 		sort(parsedFractions.begin(), parsedFractions.end(),sortcol);
 
-		while (true) {
-			if (parsedFractions[done_y][0] == 0) {
-				if (equal(parsedFractions[done_y].begin() + 1, parsedFractions[done_y].end(), parsedFractions[done_y].begin())) {
-					vector<Fraction> temp = parsedFractions[done_y];
-					parsedFractions.erase(parsedFractions.begin() + done_y);
-					parsedFractions.push_back(temp);
-					end--;
-					if (end == lead) {
-						break;
-					}
-				} else {
-					break;
-				}
-			}
-			// check if all zeros, if so, push back
-			
-		}
 		
-		// turn first element into 1 if not  so already and cancel out (pivot) the others
-		if (parsedFractions[done_y][done_x] < 1) {
-			;
-		} else if (parsedFractions[done_y][done_x] == 1) {
-			;
-		} else {
-
-		}
-		for (int x = 0; x < end_x; x++) {
-			Fraction tmp = parsedFractions[lead][lead];
-			if (y == lead) {
-				parsedFractions[y][x] = parsedFractions[y][x] / tmp;
-			} else {
-				parsedFractions[y][x] = parsedFractions[y][x] - (parsedFractions[lead][x] * (parsedFractions[y][lead] / tmp));
-			}
-			std::cout << parsedFractions[y][x]<<endl;
-		}
-		done_y++;
-		done_x++;
-		lead++;
-	}
 
 	// output answer
-	cout << "The answer is: ";
+	cout << "The answer is: " << endl;
 	for (int i = 0; i < a_height; i++) {
 		for (int j = 0; j < a_width; j++)
 			cout << "\t" <<  parsedFractions[i][j];
 		cout << "\n";
 	}
 
+		// if col is not all zero get leading number that is not 0
+		if (!col_zeros(parsedFractions, col_ptr)) {
+			while (parsedFractions[0][col_ptr] == 0) {
+				// if the row is all zero, erase and add to 0 counter and delete from end ptr
+				if (equal(parsedFractions[0].begin() + 1, parsedFractions[0].end(), parsedFractions[0].begin())) {
+					parsedFractions.erase(parsedFractions.begin());
+					zero_counter++;
+					end--;
+					pivot--;
+					// if matrix is all zero, break from checks
+					if (end == 0) {
+						break;
+					}
+				} else {
+					// push to end
+					vector<Fraction> temp = parsedFractions[0];
+					parsedFractions.erase(parsedFractions.begin());
+					parsedFractions.push_back(temp);
+					pivot--;
+				}
+			}
+		} else {
+			// if col is all zeros, go to next column
+			col_ptr++;
+			continue;
+		}
+		// turn first element into 1 if not  so already and cancel out (pivot) the others
+		if (parsedFractions[0][col_ptr] != Fraction(1,1)) {
+			Fraction factor = Fraction(1,1) / parsedFractions[0][col_ptr];
+			parsedFractions[0][col_ptr] = Fraction(1,1);
+			for (int tmp_col_ptr = 1; tmp_col_ptr < parsedFractions[0].size(); tmp_col_ptr++) {
+				parsedFractions[0][tmp_col_ptr] = parsedFractions[0][tmp_col_ptr] * factor;
+			}
+		}
+
+		row_ptr = 1;
+		// zero out others by pivot
+		while (row_ptr < pivot) {
+
+			row_ptr++;
+		}
+		col_ptr++;
+	}
+
+	// TODO: add 0s back
+
+	// output answer
+	cout << "The answer is: " << endl;
+	for (int i = 0; i < a_height; i++) {
+		for (int j = 0; j < a_width; j++)
+			cout << "\t" <<  parsedFractions[i][j];
+		cout << "\n";
+	}
 
 	return 0;
-
 }
