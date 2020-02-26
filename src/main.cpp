@@ -146,6 +146,26 @@ int main() {
 		} else {
 			// if col is all zeros, go to next column
 			col_ptr++;
+			// fixed illegal zeros matrix
+			// if rank less than rows, do not turn into 1, also done 
+			if ((col_ptr + zero_counter) >= a_height) {
+				cout << "This is an illegal set of equations" << endl;
+				cout << "The answer is so far without issue is: " << endl;
+				for (int i = 0; i < (col_ptr - 1); i++) {
+					for (int j = 0; j < a_width; j++)
+						cout << "\t" <<  finalFrac[i][j];
+					cout << "\n";
+				}
+				// add 0s back
+				for (int j = 0; j < zero_counter; j++)
+					parsedFractions.push_back(zero);
+				for (int i = 0; i < parsedFractions.size(); i++) {
+					for (int j = 0; j < a_width; j++)
+						cout << "\t" <<  parsedFractions[i][j];
+					cout << "\n";
+				}
+				return 0;
+			}
 			continue;
 		}
 
