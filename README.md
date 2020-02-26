@@ -6,8 +6,10 @@
 This project is a rref calculator. Modify the matrices and
 this program will calculate the rref if there exist a rref
 
-The main cpp file require you to hard code the 
+The main_hard cpp file require you to hard code the 
 numbers in matrices into the int structures a and b
+
+On the other hand, the main is a console application that can be run
 
 Also included is a main.h file that does nothing
 

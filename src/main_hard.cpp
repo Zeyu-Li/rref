@@ -57,7 +57,7 @@ int main() {
 	// inits the first and second matrix
 	string a[a_height][a_width] = {
 		{"1/21", "5", "0", "12/3"},
-		{"2/7", "  1/4", "0", "0"},
+		{"2/7", "  1/4", "90", "0"},
 		{"0", "  8", "1", "2/3"}
 	};
 
@@ -175,6 +175,24 @@ int main() {
 
 	// fully rref by:
 	// starting from the back and work up
+	int start, pivoter;
+	Fraction pivot_factor_;
+	for (int back = finalFrac.size() - 1; back > 0; back--) {
+		for (int starter = 0; ; starter++){
+			if (finalFrac[back][starter] == 1) {
+				start = starter;
+				break;
+			}
+		}
+		// inits pivotor as the row minus 1 (row before the one minused)
+		pivoter = back - 1;
+
+		pivot_factor_ = finalFrac[pivoter][start];
+		finalFrac[pivoter][start] = Fraction(0, 1);
+		for (int col_s = start + 1; col_s < a_width; col_s++) {
+			finalFrac[pivoter][col_s] = finalFrac[pivoter][col_s] - (pivot_factor_ * finalFrac[back][col_s]);
+		}
+	}
 
 	// add 0s back
 	for (int j = 0; j < zero_counter; j++)
