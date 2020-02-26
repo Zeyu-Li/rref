@@ -1,5 +1,5 @@
 
-# rref matrix calculator in C++
+# rref matrix calculator in C++ (via Gauss Jordan method)
 
 ## About
 
@@ -19,6 +19,10 @@ Also included is a main.h file that does nothing
 * test - place to stage tests
 
 Nothing more, nothing less
+
+## Libs
+
+* [cpp_fractions_lib](https://github.com/Zeyu-Li/cpp_fractions_lib)
 
 ## Licence
 

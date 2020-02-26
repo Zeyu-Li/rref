@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
-#include<algorithm> // for sort() 
+#include <algorithm> // for sort() 
 #include "../libs/Fraction.h"
 #include "../libs/Fraction.cpp"
 using namespace std;
@@ -104,11 +104,10 @@ int main() {
 		zero.push_back(Fraction(0,1));
 
 	vector<vector <Fraction>> finalFrac(a_height, vector<Fraction>(a_width));
-	while (col_ptr < end) {
-		row_ptr = 0;
+	while (end >= 1) {
 		pivot = end;
 		// sort by x (lead) element in row https://www.geeksforgeeks.org/sorting-2d-vector-in-c-set-1-by-row-and-column/
-		sort(parsedFractions.begin(), parsedFractions.end(),sortcol);
+		sort(parsedFractions.begin(), parsedFractions.end(), sortcol);
 
 		// if col is not all zero get leading number that is not 0
 		if (!col_zeros(parsedFractions, col_ptr)) {
@@ -137,52 +136,47 @@ int main() {
 			continue;
 		}
 
-	cout << "The answer is: " << endl;
-	for (int i = 0; i < parsedFractions.size(); i++) {
-		for (int j = 0; j < a_width; j++)
-			cout << "\t" <<  parsedFractions[i][j];
-		cout << "\n";
-	}
 		// turn first element into 1 if not so already and cancel out (pivot) the others
 		if (parsedFractions[0][col_ptr] != one) {
 			factor = one / parsedFractions[0][col_ptr];
-			cout << factor << endl;
 			parsedFractions[0][col_ptr] = one;
-			for (int tmp_col_ptr = 1; tmp_col_ptr < parsedFractions[0].size(); tmp_col_ptr++) {
+			for (int tmp_col_ptr = col_ptr + 1; tmp_col_ptr < parsedFractions[0].size(); tmp_col_ptr++) {
 				parsedFractions[0][tmp_col_ptr] = parsedFractions[0][tmp_col_ptr] * factor;
 			}
+			
 			// push to final matrix once it is a one
-			finalFrac[col_ptr] = parsedFractions[col_ptr];
+			finalFrac[col_ptr] = parsedFractions[0];
 		} else {
-			finalFrac[col_ptr] = parsedFractions[col_ptr];
+			finalFrac[col_ptr] = parsedFractions[0];
+		}
+		// if matrix remaining is 1, then done
+		if (parsedFractions.size() == 1) {
+			break;
 		}
 
-	cout << "The answer is: " << endl;
-	for (int i = 0; i < parsedFractions.size(); i++) {
-		for (int j = 0; j < a_width; j++)
-			cout << "\t" <<  parsedFractions[i][j];
-		cout << "\n";
-	}
-
+		// row pointer always starts at the 1
 		row_ptr = 1;
 		// zero out others by pivot
 		while (row_ptr < pivot) {
 			// for each row
 			pivot_factor = parsedFractions[row_ptr][col_ptr];
 			parsedFractions[row_ptr][col_ptr] = Fraction(0, 1);
-			for (int col = col_ptr + 1; col < a_width; col++) {
-				parsedFractions[row_ptr][col] = parsedFractions[row_ptr][col] - pivot_factor * parsedFractions[row_ptr][col_ptr];
+			for (int col_s = col_ptr + 1; col_s < a_width; col_s++) {
+				parsedFractions[row_ptr][col_s] = parsedFractions[row_ptr][col_s] - (pivot_factor * parsedFractions[0][col_s]);
 			}
 			row_ptr++;
 		}
+
 		// ease first matrix, it's in the final matrix
 		parsedFractions.erase(parsedFractions.begin());
-		
+		end--;
 		col_ptr++;
 	}
-	cout << "Done";
 
-	// TODO: add 0s back
+	// fully rref by:
+	// starting from the back and work up
+
+	// add 0s back
 	for (int j = 0; j < zero_counter; j++)
 		finalFrac.push_back(zero);
 
