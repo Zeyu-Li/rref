@@ -137,18 +137,32 @@ int main() {
 			continue;
 		}
 
-		// turn first element into 1 if not  so already and cancel out (pivot) the others
+	cout << "The answer is: " << endl;
+	for (int i = 0; i < parsedFractions.size(); i++) {
+		for (int j = 0; j < a_width; j++)
+			cout << "\t" <<  parsedFractions[i][j];
+		cout << "\n";
+	}
+		// turn first element into 1 if not so already and cancel out (pivot) the others
 		if (parsedFractions[0][col_ptr] != one) {
 			factor = one / parsedFractions[0][col_ptr];
+			cout << factor << endl;
 			parsedFractions[0][col_ptr] = one;
 			for (int tmp_col_ptr = 1; tmp_col_ptr < parsedFractions[0].size(); tmp_col_ptr++) {
 				parsedFractions[0][tmp_col_ptr] = parsedFractions[0][tmp_col_ptr] * factor;
 			}
 			// push to final matrix once it is a one
-			finalFrac.push_back(parsedFractions[col_ptr]);
+			finalFrac[col_ptr] = parsedFractions[col_ptr];
 		} else {
-			finalFrac.push_back(parsedFractions[col_ptr]);
+			finalFrac[col_ptr] = parsedFractions[col_ptr];
 		}
+
+	cout << "The answer is: " << endl;
+	for (int i = 0; i < parsedFractions.size(); i++) {
+		for (int j = 0; j < a_width; j++)
+			cout << "\t" <<  parsedFractions[i][j];
+		cout << "\n";
+	}
 
 		row_ptr = 1;
 		// zero out others by pivot
