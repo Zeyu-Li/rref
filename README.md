@@ -12,6 +12,7 @@ numbers in matrices into the int structures a and b
 On the other hand, the main is a console application that can be run
 
 Also, no illegal rrefs (ie not constant [example: 0x = 2])
+If it is illegal, the program will probably stop when it runs out of memory (may or may not crash)
 
 Also included is a main.h file that does nothing
 
