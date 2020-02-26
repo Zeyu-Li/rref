@@ -102,16 +102,6 @@ int main() {
 		// sort by x (lead) element in row https://www.geeksforgeeks.org/sorting-2d-vector-in-c-set-1-by-row-and-column/
 		sort(parsedFractions.begin(), parsedFractions.end(),sortcol);
 
-		
-
-	// output answer
-	cout << "The answer is: " << endl;
-	for (int i = 0; i < a_height; i++) {
-		for (int j = 0; j < a_width; j++)
-			cout << "\t" <<  parsedFractions[i][j];
-		cout << "\n";
-	}
-
 		// if col is not all zero get leading number that is not 0
 		if (!col_zeros(parsedFractions, col_ptr)) {
 			while (parsedFractions[0][col_ptr] == 0) {
@@ -138,6 +128,7 @@ int main() {
 			col_ptr++;
 			continue;
 		}
+
 		// turn first element into 1 if not  so already and cancel out (pivot) the others
 		if (parsedFractions[0][col_ptr] != Fraction(1,1)) {
 			Fraction factor = Fraction(1,1) / parsedFractions[0][col_ptr];
@@ -152,6 +143,14 @@ int main() {
 		while (row_ptr < pivot) {
 
 			row_ptr++;
+		}
+		
+		// intermediate step
+		cout << "The current matrix is: " << endl;
+		for (int i = 0; i < a_height; i++) {
+			for (int j = 0; j < a_width; j++)
+				cout << "\t" <<  parsedFractions[i][j];
+			cout << "\n";
 		}
 		col_ptr++;
 	}
