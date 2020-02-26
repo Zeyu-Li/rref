@@ -151,6 +151,13 @@ void Fraction::print ()
 		cout << _num << "/" << _den << endl;
 	}
 
+Fraction Fraction::c_abs() {
+	if (this->_num < 0) {
+		return Fraction(-this->_num, this->_den);
+	}
+	return Fraction(this->_num, this->_den);
+}
+
 ostream& operator << (ostream& os, Fraction fraction) {
 	if (fraction._den == 1) {
 		os << fraction._num;

@@ -1,0 +1,1 @@
+parsedFractions.size() - 1

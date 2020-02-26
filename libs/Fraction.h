@@ -36,6 +36,7 @@ public:
   ~ Fraction ();
   float toDecimal () const;
   void print ();
+  Fraction c_abs ();
   friend std::ostream & operator << (std::ostream & , Fraction ) ;
   friend std::ostream & operator >> (std::ostream & , Fraction ) ;
 };

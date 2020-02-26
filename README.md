@@ -11,6 +11,8 @@ numbers in matrices into the int structures a and b
 
 On the other hand, the main is a console application that can be run
 
+Also, no illegal rrefs (ie not constant [example: 0x = 2])
+
 Also included is a main.h file that does nothing
 
 ## Project files

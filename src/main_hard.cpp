@@ -9,7 +9,7 @@ using namespace std;
 // damn whitespaces and string lib not included
 // from https://www.techiedelight.com/trim-string-cpp-remove-leading-trailing-spaces/
 const string WHITESPACE = " \n\r\t\f\v";
-// I know bad pratice, but I'm still learning
+// I know bad pratice, but I'm still learning, therefore global var
 int col_ptr = 0;
 
 string ltrim(const string& s)
@@ -30,7 +30,7 @@ string trim(const string& s) {
 }
 
 bool sortcol(vector<Fraction>& v1, vector<Fraction>& v2) {
-	return v1[col_ptr] < v2[col_ptr];
+	return v1[col_ptr].c_abs() < v2[col_ptr].c_abs();
 }
 
 bool col_zeros(vector<vector <Fraction>>& matrix, const int col) {
@@ -55,18 +55,21 @@ int main() {
 	int const a_width = 4;
 
 	// inits the first and second matrix
+	// If you want to change the matrix, 
+	// this is where you want to change it (it must be a string)
 	string a[a_height][a_width] = {
 		{"1/21", "5", "0", "12/3"},
 		{"2/7", "  1/4", "90", "0"},
-		{"0", "  8", "1", "2/3"}
+		{"0", "  0 ", "10", "2/3"}
 	};
 
-	// parse vectors
+	// inits
 	vector<vector <Fraction>> parsedFractions(a_height, vector<Fraction>(a_width));
 	string delimiter = "/";
 	string token;
 	int bottom;
 	int top;
+	// parse string vectors -> matrix containing fractions
 	for (int i = 0; i < a_height; i++) {
 		for (int j = 0; j < a_width; j++){
 			string someString = trim(a[i][j]);
@@ -85,6 +88,7 @@ int main() {
 				top = stoi(someString);
 				}
 			} catch (...) {
+				// if error in parsing, print error
 				cout << "One of the input numbers is wrong" << endl;
 				return 0;
 			}
@@ -98,15 +102,18 @@ int main() {
 	int zero_counter = 0;
 	int row_ptr, pivot;
 	Fraction pivot_factor, factor;
-	// init zeros
+	// init row full of zeros
 	vector<Fraction> zero;
 	for (int t = 0; t < a_width; t++)
 		zero.push_back(Fraction(0,1));
 
 	vector<vector <Fraction>> finalFrac(a_height, vector<Fraction>(a_width));
+
+	// while there is a row in parsed fractions
 	while (end >= 1) {
 		pivot = end;
-		// sort by x (lead) element in row https://www.geeksforgeeks.org/sorting-2d-vector-in-c-set-1-by-row-and-column/
+		// sort by x (lead) element in row
+		// from https://www.geeksforgeeks.org/sorting-2d-vector-in-c-set-1-by-row-and-column/
 		sort(parsedFractions.begin(), parsedFractions.end(), sortcol);
 
 		// if col is not all zero get leading number that is not 0
@@ -135,6 +142,7 @@ int main() {
 			col_ptr++;
 			continue;
 		}
+
 
 		// turn first element into 1 if not so already and cancel out (pivot) the others
 		if (parsedFractions[0][col_ptr] != one) {
