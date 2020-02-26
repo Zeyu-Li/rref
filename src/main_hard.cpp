@@ -50,6 +50,7 @@ bool col_zeros(vector<vector <Fraction>>& matrix, const int col) {
 int main() {
 
 	// inits the matrix heights and widths
+	Fraction one = Fraction(1, 1);
 	int const a_height = 3;
 	int const a_width = 4;
 
@@ -96,6 +97,13 @@ int main() {
 	int end = a_height;
 	int zero_counter = 0;
 	int row_ptr, pivot;
+	Fraction pivot_factor, factor;
+	// init zeros
+	vector<Fraction> zero;
+	for (int t = 0; t < a_width; t++)
+		zero.push_back(Fraction(0,1));
+
+	vector<vector <Fraction>> finalFrac(a_height, vector<Fraction>(a_width));
 	while (col_ptr < end) {
 		row_ptr = 0;
 		pivot = end;
@@ -130,38 +138,45 @@ int main() {
 		}
 
 		// turn first element into 1 if not  so already and cancel out (pivot) the others
-		if (parsedFractions[0][col_ptr] != Fraction(1,1)) {
-			Fraction factor = Fraction(1,1) / parsedFractions[0][col_ptr];
-			parsedFractions[0][col_ptr] = Fraction(1,1);
+		if (parsedFractions[0][col_ptr] != one) {
+			factor = one / parsedFractions[0][col_ptr];
+			parsedFractions[0][col_ptr] = one;
 			for (int tmp_col_ptr = 1; tmp_col_ptr < parsedFractions[0].size(); tmp_col_ptr++) {
 				parsedFractions[0][tmp_col_ptr] = parsedFractions[0][tmp_col_ptr] * factor;
 			}
+			// push to final matrix once it is a one
+			finalFrac.push_back(parsedFractions[col_ptr]);
+		} else {
+			finalFrac.push_back(parsedFractions[col_ptr]);
 		}
 
 		row_ptr = 1;
 		// zero out others by pivot
 		while (row_ptr < pivot) {
-
+			// for each row
+			pivot_factor = parsedFractions[row_ptr][col_ptr];
+			parsedFractions[row_ptr][col_ptr] = Fraction(0, 1);
+			for (int col = col_ptr + 1; col < a_width; col++) {
+				parsedFractions[row_ptr][col] = parsedFractions[row_ptr][col] - pivot_factor * parsedFractions[row_ptr][col_ptr];
+			}
 			row_ptr++;
 		}
+		// ease first matrix, it's in the final matrix
+		parsedFractions.erase(parsedFractions.begin());
 		
-		// intermediate step
-		cout << "The current matrix is: " << endl;
-		for (int i = 0; i < a_height; i++) {
-			for (int j = 0; j < a_width; j++)
-				cout << "\t" <<  parsedFractions[i][j];
-			cout << "\n";
-		}
 		col_ptr++;
 	}
+	cout << "Done";
 
 	// TODO: add 0s back
+	for (int j = 0; j < zero_counter; j++)
+		finalFrac.push_back(zero);
 
 	// output answer
 	cout << "The answer is: " << endl;
 	for (int i = 0; i < a_height; i++) {
 		for (int j = 0; j < a_width; j++)
-			cout << "\t" <<  parsedFractions[i][j];
+			cout << "\t" <<  finalFrac[i][j];
 		cout << "\n";
 	}
 
